@@ -1,0 +1,4 @@
+<factorypath>
+    <factorypathentry kind="VARJAR" id="M2_REPO/javax/servlet/javax.servlet-api/4.0.1/javax.servlet-api-4.0.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/org/projectlombok/lombok/1.18.16/lombok-1.18.16.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>
