@@ -1,13 +1,65 @@
 package com.cqu.myspring;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 public class MyAnnotationConfigApplicationContext {
+    // 缓存保存ioc
+    private Map<String,Object> ioc = new HashMap<>();
+
     // 传入包名以便获取包里所有类
     public MyAnnotationConfigApplicationContext(String pack) {
         // 遍历包，找到目标类(原材料)
         Set<BeanDefinition> beanDefinitions = findBeanDefinitions(pack);
+        // Iterator<BeanDefinition> iterator = beanDefinitions.iterator();
+        // while(iterator.hasNext()) {
+        //     BeanDefinition next = iterator.next();
+        //     System.out.println(next);
+        // }
+
+        // 根据原材料创建类 
+    }
+
+    public Object getBean(String beanName){
+        return ioc.get(beanName);
+    }
+
+    public void createObject(Set<BeanDefinition> beanDefinitions){
+        Iterator<BeanDefinition> iterator = beanDefinitions.iterator();
+        while(iterator.hasNext()) {
+            BeanDefinition beanDefinition = iterator.next();
+            Class clazz = beanDefinition.getBeanClass();
+            String beanName = beanDefinition.getBeanName();
+            try {
+                // 创建的对象
+                Object object = clazz.getConstructor().newInstance();
+                // 先完成属性赋值
+                Field[] declaredFields = clazz.getDeclaredFields(); // 获取所有属性
+                for (Field declaredField : declaredFields) {
+                    Value valueAnnotation = declaredField.getAnnotation(Value.class);
+                    if (valueAnnotation != null) { // 有注解
+                        String value = valueAnnotation.value();
+                        String fieldName = declaredField.getName();
+                        String methodName = "set" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1); // 获取set方法名
+                        Method method = clazz.getMethod(methodName,declaredField.getType());
+                    }
+
+                }
+
+
+                ioc.put(beanName,object);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Set<BeanDefinition> findBeanDefinitions(String pack){
@@ -17,6 +69,8 @@ public class MyAnnotationConfigApplicationContext {
         // 2.遍历这些类
         // 获取迭代器
         Iterator<Class<?>> iterator = classes.iterator();
+
+        Set<BeanDefinition> beanDefinitions = new HashSet<>();
         while (iterator.hasNext()) {
             Class<?> clazz = iterator.next();
             // 获得注解
@@ -25,13 +79,17 @@ public class MyAnnotationConfigApplicationContext {
             if (componentAnnotation!=null) {
                 // 获取Component注释的值
                 String beanName = componentAnnotation.value();
-                if ("".equals(beanName)){
-                    // 获取类名小写
-
+                if ("".equals(beanName)){ // 注解内没写
+                    // 获取类名小写用作beanName
+                    String className = clazz.getName().replaceAll(clazz.getPackage().getName()+".", ""); // 先取包名再替换为空即可去除包名前缀
+                    beanName = className.substring(0, 1).toLowerCase()+className.substring(1); //将第一个字母变为小写                
                 }
-            }
-        }
         // 3.将这些类封装成beanDefinition
-        return null;
+
+                beanDefinitions.add(new BeanDefinition(beanName, clazz));
+            }
+            
+        }
+        return beanDefinitions;
     }
 }
