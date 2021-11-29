@@ -19,7 +19,46 @@ public class MyAnnotationConfigApplicationContext {
         //     System.out.println(next);
         // }
 
-        // 根据原材料创建类 
+        // 根据原材料创建bean
+        createObject(beanDefinitions);
+        // 自动装载
+        autowireObject(beanDefinitions);
+    }
+
+    public void autowireObject(Set<BeanDefinition> beanDefinitions) {
+        Iterator<BeanDefinition> iterator = beanDefinitions.iterator();
+        while(iterator.hasNext()) {
+            BeanDefinition beanDefinition = iterator.next();
+            Class clazz = beanDefinition.getBeanClass();
+            Field[] declaredFields = clazz.getDeclaredFields(); // 获取所有属性
+            for (Field declaredField : declaredFields) {
+                Autowired annotation = declaredField.getAnnotation(Autowired.class); // 判断是否有Autowired注解
+                if (annotation != null) { // 判断是否有Autowired注解
+                    Qualifier qualifier = declaredField.getAnnotation(Qualifier.class);
+                    if (qualifier != null) {
+                        try {
+                            // byName
+                            String beanName = qualifier.value();
+                            Object bean = getBean(beanName); // 属性
+                            String fieldName = declaredField.getName();
+                            String methodName = "set" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1); // 获取set方法名
+                            Method method = clazz.getMethod(methodName,declaredField.getType()); // 获取方法
+                            Object object = getBean(beanDefinition.getBeanName()); // 对象
+                            method.invoke(object, bean);
+                        } catch (NoSuchMethodException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InvocationTargetException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        // byType
+                    }
+                }
+            }
+        }
     }
 
     public Object getBean(String beanName){
@@ -43,12 +82,26 @@ public class MyAnnotationConfigApplicationContext {
                         String value = valueAnnotation.value();
                         String fieldName = declaredField.getName();
                         String methodName = "set" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1); // 获取set方法名
-                        Method method = clazz.getMethod(methodName,declaredField.getType());
+                        Method method = clazz.getMethod(methodName,declaredField.getType()); // 获取方法
+                        // 完成数据类型转换
+                        Object val = null;
+                        switch (declaredField.getType().getName()){
+                            case  "java.lang.Integer":
+                                val = Integer.parseInt(value);
+                                break;
+                            case  "java.lang.String":
+                                val = value;
+                                break;
+                            case "java.lang.Float":
+                                val = Float.parseFloat(value);
+                                break;
+                        }
+                        method.invoke(object,val);
                     }
 
                 }
 
-
+                // 放入ioc容器
                 ioc.put(beanName,object);
             } catch (InstantiationException e) {
                 e.printStackTrace();
