@@ -32,15 +32,16 @@ public class MyAnnotationConfigApplicationContext {
             Class clazz = beanDefinition.getBeanClass();
             Field[] declaredFields = clazz.getDeclaredFields(); // 获取所有属性
             for (Field declaredField : declaredFields) {
-                Autowired annotation = declaredField.getAnnotation(Autowired.class); // 判断是否有Autowired注解
+                Autowired annotation = declaredField.getAnnotation(Autowired.class); // 判断每一个file是否添加Autowired注解
                 if (annotation != null) { // 判断是否有Autowired注解
                     Qualifier qualifier = declaredField.getAnnotation(Qualifier.class);
                     if (qualifier != null) {
                         try {
                             // byName
                             String beanName = qualifier.value();
+                            //把bean赋值给order
                             Object bean = getBean(beanName); // 属性
-                            String fieldName = declaredField.getName();
+                            String fieldName = declaredField.getName();//拿到名字
                             String methodName = "set" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1); // 获取set方法名
                             Method method = clazz.getMethod(methodName,declaredField.getType()); // 获取方法
                             Object object = getBean(beanDefinition.getBeanName()); // 对象
