@@ -41,8 +41,8 @@ public class DJ_IoC {
                             addBean(cla.getName(), newInstance(cla));
                         }else if(cla.isAnnotationPresent(DJService.class)){
                             // service
-                            DJService myService = cla.getAnnotation(DJService.class);
-                            String beanName = myService.value();
+                            DJService DJService = cla.getAnnotation(DJService.class);
+                            String beanName = DJService.value();
                             if ("".equals(beanName.trim())){
                                 beanName = toLowerFirstWord(cla.getSimpleName());
                             }
