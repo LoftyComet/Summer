@@ -18,27 +18,26 @@ jsp文件优化
 
 DJapp文件夹
 文件目录结构
-./
-|
-+-- DJapp/
+
++-- DJapp
 | |
-| +---- controller/ 
+| +---- controller
 | | |
-| | |+---- DJappcontroller.java/ 
+| | |+---- DJappcontroller.java
 | | |
-| | |+---- DJrestController.java/ 
+| | |+---- DJrestController.java
 | | |
-| +---- model/ 
+| +---- model
 | | |
-| | |+---- Book.java/ 
+| | |+---- Book.java
 | | |
-| | |+---- RestModel.java/ 
+| | |+---- RestModel.java
 | | |
-| +---- service/ 
+| +---- service
 | | |
-| | |+---- DJappService.java/ 
+| | |+---- DJappService.java
 | | |
-| | |+---- DJbookService.java/ 
+| | |+---- DJbookService.java
 | | |
 | |
 | 
