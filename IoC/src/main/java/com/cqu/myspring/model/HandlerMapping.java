@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.*;
-
+// 处理地址映射关系
 public class HandlerMapping {
 
     private Properties properties = new Properties();

@@ -4,7 +4,7 @@ package com.cqu.myspring.model;
 import com.cqu.myspring.annotation.ResponseType;
 
 import java.lang.reflect.Method;
-
+// 用来保存beanname和类别返回类型的封装类
 public class MVCMapping {
     protected Method method;
     protected ResponseType responseType;

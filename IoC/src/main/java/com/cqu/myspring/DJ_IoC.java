@@ -13,7 +13,7 @@ public class DJ_IoC {
 
     public DJ_IoC(String packageName) throws Exception {
         beanMap = new HashMap<>();
-        // 1. doInstance
+        // 1. doInstance，通过包名找到所以加了注释需要处理的类
         loadClass(packageName);
         // 2. doAutowired
         doAutowire();
