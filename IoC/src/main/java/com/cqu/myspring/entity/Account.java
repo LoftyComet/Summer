@@ -1,9 +1,9 @@
 package com.cqu.myspring.entity;
 
-import com.cqu.myspring.Autowired;
-import com.cqu.myspring.Component;
-import com.cqu.myspring.Qualifier;
-import com.cqu.myspring.Value;
+import com.cqu.myspring.annotation.Autowired;
+import com.cqu.myspring.annotation.Component;
+import com.cqu.myspring.annotation.Qualifier;
+import com.cqu.myspring.annotation.Value;
 import lombok.Data;
 
 // 添加自定义注解

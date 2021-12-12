@@ -1,4 +1,4 @@
-package com.cqu.servlet;
+package com.cqu.myspring.servlet;
 
 import com.cqu.service.HelloService;
 import com.cqu.service.impl.HelloServiceImpl;

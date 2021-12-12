@@ -1,12 +1,13 @@
-package com.cqu.myspring;
+package com.cqu.myspring.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.FIELD)
+//自动装载
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Qualifier {
-    String value();
+@Target({ ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD })
+public @interface Autowired {
+
 }

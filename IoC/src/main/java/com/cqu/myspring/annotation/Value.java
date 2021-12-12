@@ -1,4 +1,4 @@
-package com.cqu.myspring;
+package com.cqu.myspring.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

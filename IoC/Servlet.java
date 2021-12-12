@@ -1,4 +1,4 @@
-package com.cqu.servlet; //注意更改包
+package com.cqu.myspring.servlet; //注意更改包
 
 // import com.cqu.service.HelloService;
 // import com.cqu.service.impl.HelloServiceImpl;

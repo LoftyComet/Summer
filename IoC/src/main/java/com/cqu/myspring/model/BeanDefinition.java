@@ -1,4 +1,4 @@
-package com.cqu.myspring;
+package com.cqu.myspring.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
